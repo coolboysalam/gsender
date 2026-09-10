@@ -1,3 +1,4 @@
+import { PERSIAN_SETTINGS_DESCRIPTIONS } from 'app/features/Config/assets/PersianSettingsDescriptions.ts';
 import { useSettings } from 'app/features/Config/utils/SettingsContext.tsx';
 import { getDatatypeInput } from 'app/features/Config/utils/EEPROM.ts';
 import get from 'lodash/get';
@@ -55,7 +56,9 @@ export function EEPROMSettingRow({
             ? translateGrblCoreKey(eID as EEPROM, firmwareSemver, boardId)
             : eID;
     const EEPROMData = eepromMap.get(effectiveEID as EEPROM);
-
+const persianDescription =
+    EEPROMData &&
+    PERSIAN_SETTINGS_DESCRIPTIONS[EEPROMData.setting];
     if (EEPROMData) {
         const isDefault = eepromIsDefault(EEPROMData);
         const profileDefaults =
@@ -76,15 +79,24 @@ export function EEPROMSettingRow({
 
         //const matchesSearch = matchesSearchTerm(EEPROMData, searchTerm);
 
-        const detailString = (
-            <span>
-                {filterNewlines(EEPROMData.details)}
-                <span>
-                    {' '}
-                    ({EEPROMData.setting}, Default {inputDefault})
-                </span>
+       const detailString = (
+    <span>
+        {filterNewlines(EEPROMData.details)}
+        <span>
+            {' '}
+            ({EEPROMData.setting}, Default {inputDefault})
+        </span>
+
+        {persianDescription && (
+            <span
+                dir="rtl"
+                className="block mt-1 text-right text-gray-600 dark:text-gray-300"
+            >
+                {persianDescription}
             </span>
-        );
+        )}
+    </span>
+);
 
         return (
             <div
